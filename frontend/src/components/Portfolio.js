@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -16,17 +16,83 @@ import {
   ExternalLink,
   Calendar,
   MapPin,
-  Download
+  Download,
+  Loader2
 } from "lucide-react";
-import { mockData } from "../data/mock";
+import { portfolioApi } from "../services/api";
 
 const Portfolio = () => {
   const [activeSection, setActiveSection] = useState("about");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [data, setData] = useState({
+    profile: null,
+    projects: [],
+    skills: [],
+    achievements: [],
+    certifications: []
+  });
+
+  useEffect(() => {
+    loadPortfolioData();
+  }, []);
+
+  const loadPortfolioData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const [profile, projects, skills, achievements, certifications] = await Promise.all([
+        portfolioApi.getProfile(),
+        portfolioApi.getProjects(),
+        portfolioApi.getSkills(),
+        portfolioApi.getAchievements(),
+        portfolioApi.getCertifications()
+      ]);
+
+      setData({
+        profile,
+        projects,
+        skills,
+        achievements,
+        certifications
+      });
+    } catch (err) {
+      setError(err.message);
+      console.error('Error loading portfolio data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleDownloadResume = () => {
-    // Mock download functionality
     console.log("Downloading resume...");
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="flex items-center space-x-4">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
+          <span className="text-xl">Loading Portfolio...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-red-400 mb-4">Error Loading Portfolio</h2>
+          <p className="text-gray-300 mb-6">{error}</p>
+          <Button onClick={loadPortfolioData} className="bg-blue-600 hover:bg-blue-700">
+            Try Again
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -125,7 +191,7 @@ const Portfolio = () => {
                 </CardHeader>
                 <CardContent className="text-gray-300 space-y-6">
                   <p className="text-lg leading-relaxed">
-                    {mockData.about.description}
+                    {data.profile?.about}
                   </p>
                   <div className="grid md:grid-cols-3 gap-6">
                     <div className="flex items-start space-x-3">
@@ -150,6 +216,18 @@ const Portfolio = () => {
                       </div>
                     </div>
                   </div>
+                  
+                  {/* Education Section */}
+                  {data.profile?.education && (
+                    <div className="mt-8 p-6 bg-gray-800 rounded-lg">
+                      <h3 className="font-semibold text-white mb-4">Education</h3>
+                      <div className="space-y-2">
+                        <p className="text-white font-medium">{data.profile.education.degree}</p>
+                        <p className="text-gray-400">{data.profile.education.university}</p>
+                        <p className="text-gray-400">{data.profile.education.period}</p>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -157,8 +235,8 @@ const Portfolio = () => {
             {/* Projects Section */}
             <TabsContent value="projects" className="mt-8">
               <div className="grid gap-6">
-                {mockData.projects.map((project, index) => (
-                  <Card key={index} className="bg-gray-900 border-gray-800 hover:border-blue-500 transition-all duration-300">
+                {data.projects.map((project, index) => (
+                  <Card key={project.id || index} className="bg-gray-900 border-gray-800 hover:border-blue-500 transition-all duration-300">
                     <CardHeader>
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-2xl text-white">{project.title}</CardTitle>
@@ -191,8 +269,8 @@ const Portfolio = () => {
             {/* Skills Section */}
             <TabsContent value="skills" className="mt-8">
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {mockData.skills.map((category, index) => (
-                  <Card key={index} className="bg-gray-900 border-gray-800">
+                {data.skills.map((category, index) => (
+                  <Card key={category.id || index} className="bg-gray-900 border-gray-800">
                     <CardHeader>
                       <CardTitle className="text-xl text-white">{category.category}</CardTitle>
                     </CardHeader>
@@ -222,8 +300,8 @@ const Portfolio = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {mockData.achievements.map((achievement, index) => (
-                        <div key={index} className="flex items-start space-x-3">
+                      {data.achievements.map((achievement, index) => (
+                        <div key={achievement.id || index} className="flex items-start space-x-3">
                           <div className="w-2 h-2 bg-blue-400 rounded-full mt-3"></div>
                           <div>
                             <h3 className="font-semibold text-white">{achievement.title}</h3>
@@ -241,8 +319,8 @@ const Portfolio = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="grid md:grid-cols-2 gap-4">
-                      {mockData.certifications.map((cert, index) => (
-                        <div key={index} className="p-4 bg-gray-800 rounded-lg">
+                      {data.certifications.map((cert, index) => (
+                        <div key={cert.id || index} className="p-4 bg-gray-800 rounded-lg">
                           <h3 className="font-semibold text-white mb-1">{cert.name}</h3>
                           <p className="text-sm text-gray-400">{cert.issuer}</p>
                         </div>
@@ -266,21 +344,21 @@ const Portfolio = () => {
                         <Mail className="w-6 h-6 text-blue-400" />
                         <div>
                           <p className="text-gray-300">Email</p>
-                          <p className="text-white font-semibold">{mockData.contact.email}</p>
+                          <p className="text-white font-semibold">{data.profile?.contact?.email}</p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-4">
                         <Phone className="w-6 h-6 text-green-400" />
                         <div>
                           <p className="text-gray-300">Phone</p>
-                          <p className="text-white font-semibold">{mockData.contact.phone}</p>
+                          <p className="text-white font-semibold">{data.profile?.contact?.phone}</p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-4">
                         <Linkedin className="w-6 h-6 text-blue-500" />
                         <div>
                           <p className="text-gray-300">LinkedIn</p>
-                          <p className="text-white font-semibold">{mockData.contact.linkedin}</p>
+                          <p className="text-white font-semibold">{data.profile?.contact?.linkedin}</p>
                         </div>
                       </div>
                     </div>
