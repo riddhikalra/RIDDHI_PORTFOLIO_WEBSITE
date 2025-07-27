@@ -384,6 +384,14 @@ const Portfolio = () => {
                           <Linkedin className="w-4 h-4 mr-2" />
                           LinkedIn
                         </Button>
+                        <Button 
+                          onClick={handleDownloadResume}
+                          variant="outline" 
+                          className="border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white"
+                        >
+                          <Download className="w-4 h-4 mr-2" />
+                          Resume
+                        </Button>
                       </div>
                     </div>
                   </div>
