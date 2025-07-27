@@ -283,3 +283,5 @@ test_plan:
 agent_communication:
   - agent: "testing"
     message: "Comprehensive backend API testing completed successfully. All 7 tests passed including health check, portfolio profile, projects, skills, achievements, certifications, and error handling. Backend is fully functional and ready for production. Data matches expected Riddhi Kalra portfolio information with proper structure and content. Created backend_test.py for future testing and saved detailed results to backend_test_results.json"
+  - agent: "testing"
+    message: "Starting comprehensive frontend testing for portfolio application. Will test initial load & data fetching, navigation, data rendering, UI/UX elements, error handling, and performance. Backend APIs are confirmed working, so focusing on frontend integration and user experience."
