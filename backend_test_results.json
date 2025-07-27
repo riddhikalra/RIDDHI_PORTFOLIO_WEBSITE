@@ -1,0 +1,50 @@
+{
+  "timestamp": "2025-07-27T14:17:02.058147",
+  "backend_url": "https://7a69a322-a735-435e-8f4e-24edeb9b3b85.preview.emergentagent.com",
+  "total_tests": 7,
+  "passed_tests": 7,
+  "results": [
+    {
+      "test": "Health Check",
+      "success": true,
+      "details": "Status: healthy, Message: Portfolio API is running",
+      "timestamp": "2025-07-27T14:17:01.923157"
+    },
+    {
+      "test": "Portfolio Profile",
+      "success": true,
+      "details": "Profile loaded for: riddhikalra0209@gmail.com",
+      "timestamp": "2025-07-27T14:17:01.932800"
+    },
+    {
+      "test": "Projects",
+      "success": true,
+      "details": "Found 3 projects including expected ones: ['middleware api suite', 'microservices with spring boot', 'platform migration']",
+      "timestamp": "2025-07-27T14:17:01.943267"
+    },
+    {
+      "test": "Skills",
+      "success": true,
+      "details": "Found 4 skill categories including: ['programming', 'frameworks', 'tools']",
+      "timestamp": "2025-07-27T14:17:01.991091"
+    },
+    {
+      "test": "Achievements",
+      "success": true,
+      "details": "Found 3 achievements including: ['champion', 'snowflake', 'integration']",
+      "timestamp": "2025-07-27T14:17:01.999930"
+    },
+    {
+      "test": "Certifications",
+      "success": true,
+      "details": "Found 4 certifications including: ['ui design', 'sql', 'cybersecurity']",
+      "timestamp": "2025-07-27T14:17:02.051149"
+    },
+    {
+      "test": "Error Handling - Invalid Endpoint",
+      "success": true,
+      "details": "Correctly returns 404 for invalid endpoint",
+      "timestamp": "2025-07-27T14:17:02.057981"
+    }
+  ]
+}
