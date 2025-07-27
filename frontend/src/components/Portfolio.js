@@ -66,7 +66,15 @@ const Portfolio = () => {
   };
 
   const handleDownloadResume = () => {
-    console.log("Downloading resume...");
+    // Direct download of resume PDF
+    const resumeUrl = "https://customer-assets.emergentagent.com/job_middleware-dev/artifacts/fx2wshse_Kyvernetes_CV.pdf";
+    const link = document.createElement('a');
+    link.href = resumeUrl;
+    link.download = "Riddhi_Kalra_Resume.pdf";
+    link.target = "_blank";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   if (loading) {
