@@ -40,7 +40,7 @@ export const mockData = {
   skills: [
     {
       category: "Programming Languages",
-      items: ["Java (8/11/17)", "JavaScript", "SQL", "Python"]
+      items: ["Java (8/11/17)", "JavaScript", "SQL"]
     },
     {
       category: "Frameworks & Technologies",
@@ -48,19 +48,11 @@ export const mockData = {
     },
     {
       category: "Tools & Platforms",
-      items: ["Git", "Jenkins", "ArgoCD", "Docker", "Kubernetes", "Maven"]
+      items: ["Git", "Jenkins", "ArgoCD", "CI/CD"]
     },
     {
       category: "Concepts & Architecture",
-      items: ["REST/SOAP APIs", "Microservices", "CI/CD", "Data Structures", "System Integration"]
-    },
-    {
-      category: "Databases",
-      items: ["MySQL", "PostgreSQL", "MongoDB", "Redis", "JDG/Infinispan"]
-    },
-    {
-      category: "Security & Authentication",
-      items: ["Keycloak", "JWT", "OAuth 2.0", "SSL/TLS", "API Security"]
+      items: ["REST/SOAP APIs", "Microservices Architecture", "Data Structures"]
     }
   ],
   achievements: [
